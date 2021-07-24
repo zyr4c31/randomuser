@@ -4,7 +4,8 @@
     :rows="6" @page="onPage($event)" paginatorTemplate="FirstPageLink PrevPageLink PageLinks
     NextPageLink LastPageLink JumpToPageDropdown CurrentPageReport" :pageLinkSize="10">
       <template #empty>
-        <ProgressSpinner />
+        <ProgressSpinner v-show="loading" />
+        {{ error }}
       </template>
       <Column field="picture.large">
         <template #body="{ data }">
@@ -39,7 +40,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import ProgressSpinner from 'primevue/progressspinner';
 import {
-  defineComponent, onBeforeMount, PropType, ref,
+  defineComponent, onMounted, ref
 } from 'vue';
 
 export default defineComponent({
@@ -62,13 +63,13 @@ export default defineComponent({
     ProgressSpinner, Button, DataTable, Column,
   },
   setup(props) {
-    const genderProp : Gender = (<any>Gender)[props.gender];
+    const genderProp: Gender = (<any>Gender)[props.gender];
     const query = ref<IGetUserParams>({
       numberOfUsers: parseInt(props.numberOfUsers, 10),
       gender: genderProp,
     });
-    const { loading, users, getTable } = useUsers();
-    onBeforeMount(() => getTable(query.value));
+    const { loading, users, error, getTable } = useUsers();
+    onMounted(() => getTable(query.value));
     function toQuery() {
       router.push({ name: RouteName.Randomuser });
     }
@@ -88,7 +89,7 @@ export default defineComponent({
       });
     }
     return {
-      loading, users, toQuery, onPage,
+      loading, users, error, toQuery, onPage,
     };
   },
 });

@@ -1,7 +1,5 @@
-import RouteName from '@/constants/route-name';
 import { Randomuser, Result } from '@/interface/randomuser';
 import IGetUserParams from '@/models/get-user-params';
-import router from '@/router';
 import { ref } from 'vue';
 import useApi from './use-api';
 
