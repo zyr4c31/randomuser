@@ -4,8 +4,7 @@
     <Query :query="query" />
   </div>
   <div v-show="!$route.params.page">
-    <Button v-show="!loading" @click="getUsers(query)" label="Get random users" />
-    <ProgressSpinner v-if="loading" />
+    <Button v-show="!loading" @click="toTable()" label="Get random users" />
   </div>
   <p v-if="error">{{ error }}</p>
   <Users v-if="$route.params.page" :users="users" />
@@ -16,14 +15,15 @@ import Query from '@/components/query.vue';
 import Users from '@/components/users.vue';
 import useUsers from '@/composables/use-users';
 import Gender from '@/constants/gender';
+import RouteName from '@/constants/route-name';
 import IGetUserParams from '@/models/get-user-params';
+import router from '@/router';
 import Button from 'primevue/button';
-import ProgressSpinner from 'primevue/progressspinner';
 import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   components: {
-    Query, ProgressSpinner, Button, Users,
+    Query, Button, Users,
   },
   setup() {
     const query = ref<IGetUserParams>({
@@ -31,10 +31,20 @@ export default defineComponent({
       gender: Gender.empty,
     });
     const {
-      loading, error, users, getUsers,
+      loading, error, users,
     } = useUsers();
+    function toTable() {
+      router.push({
+        name: RouteName.Table,
+        params: {
+          numberOfUsers: query.value.numberOfUsers.toString(),
+          gender: query.value.gender,
+          page: '1',
+        },
+      });
+    }
     return {
-      query, loading, error, users, getUsers,
+      query, loading, error, users, toTable,
     };
   },
 });

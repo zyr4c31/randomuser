@@ -5,12 +5,12 @@ const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: RouteName.Randomuser,
-    component: () => import('../views/index.vue'),
+    component: () => import('../views/query-page.vue'),
   },
   {
-    path: '/:page',
+    path: '/page=:page',
     name: RouteName.Table,
-    component: () => import('../views/index.vue'),
+    component: () => import('../views/table.vue'),
     props: true,
   },
 ];
