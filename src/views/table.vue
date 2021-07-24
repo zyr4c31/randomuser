@@ -51,7 +51,7 @@ export default defineComponent({
     },
     gender: {
       required: true,
-      type: Object as PropType<Gender>,
+      type: String,
     },
     page: {
       required: true,
@@ -62,9 +62,10 @@ export default defineComponent({
     ProgressSpinner, Button, DataTable, Column,
   },
   setup(props) {
+    const genderProp : Gender = (<any>Gender)[props.gender];
     const query = ref<IGetUserParams>({
       numberOfUsers: parseInt(props.numberOfUsers, 10),
-      gender: props.gender,
+      gender: genderProp,
     });
     const { loading, users, getTable } = useUsers();
     onBeforeMount(() => getTable(query.value));
