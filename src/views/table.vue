@@ -93,9 +93,3 @@ export default defineComponent({
   },
 });
 </script>
-
-<style scoped>
-.empty {
-    display: inline-flexbox;
-}
-</style>
