@@ -3,8 +3,8 @@ import { Randomuser } from '@/interface/randomuser';
 
 const sendRequest = fetchApi();
 
-export default function useApi() {
-  async function get(url: URL) {
+export default function useApi(): any {
+  async function call(url: URL): Promise<Response | Randomuser> {
     const options = {
       method: 'GET',
       headers: {
@@ -25,8 +25,5 @@ export default function useApi() {
       return errormsg;
     }
   }
-
-  return {
-    get,
-  };
+  return { call };
 }

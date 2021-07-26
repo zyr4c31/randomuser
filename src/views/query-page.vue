@@ -1,18 +1,15 @@
 <template>
-  <div v-show="!$route.params.page">
+  <div>
     <h1>{{ $route.name }}</h1>
     <Query :query="query" />
   </div>
-  <div v-show="!$route.params.page">
-    <Button v-show="!loading" @click="toTable()" label="Get random users" />
+  <div>
+    <Button @click="toTable()" label="Get random users" />
   </div>
-  <p v-if="error">{{ error }}</p>
-  <Users v-if="$route.params.page" :users="users" />
 </template>
 
 <script lang="ts">
 import Query from '@/components/query.vue';
-import Users from '@/components/users.vue';
 import useUsers from '@/composables/use-users';
 import Gender from '@/constants/gender';
 import RouteName from '@/constants/route-name';
@@ -23,16 +20,11 @@ import { defineComponent, ref } from 'vue';
 
 export default defineComponent({
   components: {
-    Query, Button, Users,
+    Query, Button,
   },
   setup() {
-    const query = ref<IGetUserParams>({
-      numberOfUsers: 1,
-      gender: Gender.empty,
-    });
-    const {
-      loading, error, users,
-    } = useUsers();
+    const query = ref<IGetUserParams>({ numberOfUsers: 1, gender: Gender.empty });
+    const { loading, error, users } = useUsers();
     function toTable() {
       router.push({
         name: RouteName.Table,

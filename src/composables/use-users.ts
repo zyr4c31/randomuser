@@ -9,13 +9,13 @@ export default function useUsers() {
   const error = ref<Randomuser>();
   const data = ref<Randomuser>();
   const users = ref<Result[]>();
-  const { get } = useApi();
-  async function getTable(query: IGetUserParams) {
+  const { call } = useApi();
+  async function get(query: IGetUserParams): Promise<Randomuser | Result[] | undefined> {
     loading.value = true;
     randomuserUrl.searchParams.set('results', query.numberOfUsers.toString());
     randomuserUrl.searchParams.set('gender', query.gender);
     try {
-      data.value = await get(randomuserUrl);
+      data.value = await call(randomuserUrl);
       if (!data.value?.results) {
         error.value = data.value;
         throw (error.value);
@@ -29,6 +29,6 @@ export default function useUsers() {
     }
   }
   return {
-    loading, error, users, getTable,
+    loading, error, users, get,
   };
 }

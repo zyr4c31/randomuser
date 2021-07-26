@@ -46,18 +46,9 @@ import {
 export default defineComponent({
   name: 'Users',
   props: {
-    numberOfUsers: {
-      required: true,
-      type: String,
-    },
-    gender: {
-      required: true,
-      type: String,
-    },
-    page: {
-      required: true,
-      type: String,
-    },
+    numberOfUsers: { required: true, type: String },
+    gender: { required: true, type: String },
+    page: { required: true, type: String },
   },
   components: {
     ProgressSpinner, Button, DataTable, Column,
@@ -65,15 +56,15 @@ export default defineComponent({
   setup(props) {
     const genderProp: Gender = (<any>Gender)[props.gender];
     const query = ref<IGetUserParams>({
-      numberOfUsers: parseInt(props.numberOfUsers, 10),
       gender: genderProp,
+      numberOfUsers: parseInt(props.numberOfUsers, 10),
     });
-    const { loading, users, error, getTable } = useUsers();
-    onMounted(() => getTable(query.value));
+    const { loading, users, error, get } = useUsers();
+    onMounted(() => get(query.value));
     function toQuery() {
       router.push({ name: RouteName.Randomuser });
     }
-    const pageNumber = ref(1);
+    const pageNumber = ref(props.page);
     const maxPage = ref(1);
 
     function onPage(event: any) {

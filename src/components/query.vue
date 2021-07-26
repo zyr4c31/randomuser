@@ -19,14 +19,9 @@ import { defineComponent, PropType, ref } from 'vue';
 export default defineComponent({
   name: 'Query',
   props: {
-    query: {
-      required: true,
-      type: Object as PropType<IGetUserParams>,
-    },
+    query: { required: true, type: Object as PropType<IGetUserParams> },
   },
-  components: {
-    Slider, Dropdown, InputText,
-  },
+  components: { Slider, Dropdown, InputText },
   setup(props) {
     const genders = ref([Gender.all, Gender.male, Gender.female]);
     const { loading } = useUsers();
