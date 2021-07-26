@@ -8,7 +8,6 @@
 </template>
 
 <script lang="ts">
-import useUsers from '@/composables/use-users';
 import Gender from '@/constants/gender';
 import IGetUserParams from '@/models/get-user-params';
 import Dropdown from 'primevue/dropdown';
@@ -24,8 +23,7 @@ export default defineComponent({
   components: { Slider, Dropdown, InputText },
   setup(props) {
     const genders = ref([Gender.all, Gender.male, Gender.female]);
-    const { loading } = useUsers();
-    return { props, genders, loading };
+    return { props, genders };
   },
 });
 </script>

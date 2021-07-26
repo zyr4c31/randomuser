@@ -1,5 +1,5 @@
-import { RouteRecordRaw } from 'vue-router';
 import RouteName from '@/constants/route-name';
+import { RouteRecordRaw } from 'vue-router';
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -11,6 +11,12 @@ const routes: Array<RouteRecordRaw> = [
     path: '/page=:page',
     name: RouteName.Table,
     component: () => import('../views/table.vue'),
+    props: true,
+  },
+  {
+    path: '/page=:page&user=:username',
+    name: RouteName.User,
+    component: () => import('../views/user.vue'),
     props: true,
   },
 ];
