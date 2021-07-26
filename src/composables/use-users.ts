@@ -4,31 +4,33 @@ import { ref } from 'vue';
 import useApi from './use-api';
 
 export default function useUsers() {
-  const randomuserUrl = new URL('https://randomuser.me/api');
   const loading = ref(false);
-  const error = ref<Randomuser>();
-  const data = ref<Randomuser>();
+  const error = ref<Randomuser['error']>();
   const users = ref<Result[]>();
-  const { call } = useApi();
-  async function get(query: IGetUserParams): Promise<Randomuser | Result[] | undefined> {
+  const { get } = useApi();
+  async function getTable(query: IGetUserParams): Promise<Result[] | undefined> {
     loading.value = true;
+    const randomuserUrl = new URL('https://randomuser.me/api');
     randomuserUrl.searchParams.set('results', query.numberOfUsers.toString());
     randomuserUrl.searchParams.set('gender', query.gender);
     try {
-      data.value = await call(randomuserUrl);
-      if (!data.value?.results) {
-        error.value = data.value;
-        throw (error.value);
+      const response = await get(randomuserUrl);
+      const data = ref<Randomuser>();
+      data.value = await response.json();
+      if (data.value?.error) {
+        error.value = data.value.error;
+        const errormsg = `error ${response.status}: ${error.value}`;
+        throw errormsg;
       }
-      users.value = data.value.results;
+      users.value = data.value?.results;
       return users.value;
-    } catch {
-      return error.value;
+    } catch (errormsg) {
+      return errormsg;
     } finally {
       loading.value = false;
     }
   }
   return {
-    loading, error, users, get,
+    loading, error, users, getTable,
   };
 }
