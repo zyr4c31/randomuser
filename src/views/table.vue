@@ -1,7 +1,7 @@
 <template>
   <div class="users" >
-    <DataTable :value="users" responsiveLayout="scroll" :paginator="true"
-    :rows="6" @page="onPage($event)" paginatorTemplate="FirstPageLink PrevPageLink PageLinks
+    <DataTable :value="users" responsiveLayout="scroll" :paginator="true" :rows="6"
+    @page="onPage($event)" @row-click="onRow($event)" paginatorTemplate="FirstPageLink PrevPageLink PageLinks
     NextPageLink LastPageLink JumpToPageDropdown CurrentPageReport" :pageLinkSize="10">
       <template #empty>
         <ProgressSpinner v-show="loading" />
@@ -19,20 +19,23 @@
       </Column>
       <Column field="email" header="Email">
       </Column>
+      <Column field="phone" header="Phone">
+      </Column>
       <Column field="location.timezone.description" header="Address">
         <template #body="{ data }">
           <p>{{ data.location.city }} City, {{ data.location.country }}</p>
        </template>
       </Column>
     </DataTable>
-    <Button @click="toQuery()" label="Back to Query" />
   </div>
+  <Button @click="toQuery()" label="Back to Query" />
 </template>
 
 <script lang="ts">
 import useUsers from '@/composables/use-users';
 import Gender from '@/constants/gender';
 import RouteName from '@/constants/route-name';
+import { Result } from '@/interface/randomuser';
 import IGetUserParams from '@/models/get-user-params';
 import router from '@/router';
 import Button from 'primevue/button';
@@ -59,8 +62,8 @@ export default defineComponent({
       gender: genderProp,
       numberOfUsers: parseInt(props.numberOfUsers, 10),
     });
-    const { loading, users, error, get } = useUsers();
-    onMounted(() => get(query.value));
+    const { loading, users, error, getTable } = useUsers();
+    onMounted(() => getTable(query.value));
     function toQuery() {
       router.push({ name: RouteName.Randomuser });
     }
@@ -79,8 +82,13 @@ export default defineComponent({
         },
       });
     }
+
+    function onRow(event: any) {
+      const user = ref<Result>(event.data);
+      router.push({ name: RouteName.User, params: { user: JSON.stringify(user.value), username: user.value.name.first } });
+    }
     return {
-      loading, users, error, toQuery, onPage,
+      loading, users, error, toQuery, onPage, onRow,
     };
   },
 });

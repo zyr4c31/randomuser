@@ -1,7 +1,7 @@
 <template>
   <div class="query">
-  <InputText v-model.number="props.query.numberOfUsers" />
-  <Slider v-model="props.query.numberOfUsers" :min="1" :max="5000"/>
+  <InputNumber v-model.number="props.query.numberOfUsers" mode="decimal" :min="0" :max="5000" />
+  <Slider v-model="props.query.numberOfUsers" :min="1" :max="5000" />
   <br>
   <Dropdown v-model="props.query.gender" :options="genders" placeholder="Select a gender" />
   </div>
@@ -11,7 +11,7 @@
 import Gender from '@/constants/gender';
 import IGetUserParams from '@/models/get-user-params';
 import Dropdown from 'primevue/dropdown';
-import InputText from 'primevue/inputtext';
+import InputNumber from 'primevue/inputtext';
 import Slider from 'primevue/slider';
 import { defineComponent, PropType, ref } from 'vue';
 
@@ -20,7 +20,7 @@ export default defineComponent({
   props: {
     query: { required: true, type: Object as PropType<IGetUserParams> },
   },
-  components: { Slider, Dropdown, InputText },
+  components: { Slider, Dropdown, InputNumber },
   setup(props) {
     const genders = ref([Gender.all, Gender.male, Gender.female]);
     return { props, genders };
