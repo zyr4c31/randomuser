@@ -5,7 +5,7 @@ set -e
 
 git init
 git add -A
-git commit -m 'feat:query, first commit'
+git commit -m 'feat:query, first commit' --no-verify
 git remote add origin git@github.com:zyr4c31/randomuser.git
 git branch -M master
 git push -u origin master

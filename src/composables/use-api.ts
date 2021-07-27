@@ -14,7 +14,7 @@ export default function useApi() {
     const response = await sendRequest(request);
     return response;
   }
-  
+
   async function get(url: URL): Promise<Response> {
     const options = {
       method: 'GET',
